@@ -1,23 +1,52 @@
+import { Pencil, Plus, Trash2 } from "lucide-react";
+
 type ClienteCardProps = {
   nome: string;
-  salario: string;
-  empresa: string;
+  salario: number;
+  empresa: number;
+  isSelected?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
   onSelect?: () => void;
 };
 
-export const ClienteCard = ({ nome, salario, empresa, onEdit, onDelete, onSelect }: ClienteCardProps) => {
+export const ClienteCard = ({
+  nome,
+  salario,
+  empresa,
+  isSelected,
+  onEdit,
+  onDelete,
+  onSelect,
+}: ClienteCardProps) => {
   return (
-    <div className="bg-white rounded-lg shadow p-4 border">
-      <h2 className="font-semibold text-center text-lg">{nome}</h2>
-      <p className="text-sm text-center">Salário: R${salario}</p>
-      <p className="text-sm text-center">Empresa: R${empresa}</p>
+    <div
+      onClick={onSelect}
+      className={`cursor-pointer rounded-2xl border bg-white p-4 shadow-sm transition-all hover:shadow-md ${
+        isSelected ? 'border-[#a855f7] ring-2 ring-[#a855f7]' : 'border-zinc-200'
+      }`}
+    >
+      <h2 className="font-bold text-lg text-center">{nome}</h2>
+      <p className="text-sm text-center">
+        Salário: R$ {Number(salario).toLocaleString('pt-BR')}
+      </p>
+      <p className="text-sm text-center">
+        Empresa: R$ {Number(empresa).toLocaleString('pt-BR')}
+      </p>
 
-      <div className="flex justify-center gap-2 mt-4">
-        <button onClick={onSelect} className="text-lg">➕</button>
-        <button onClick={onEdit} className="text-lg">✏️</button>
-        <button onClick={onDelete} className="text-lg">🗑️</button>
+      <div
+        className="flex justify-center gap-4 mt-4"
+        onClick={(e) => e.stopPropagation()} // impede clique duplo ao clicar no botão
+      >
+        <button onClick={onSelect} className="hover:text-[#a855f7]">
+          <Plus size={18} />
+        </button>
+        <button onClick={onEdit} className="hover:text-blue-500">
+          <Pencil size={18} />
+        </button>
+        <button onClick={onDelete} className="hover:text-red-500">
+          <Trash2 size={18} />
+        </button>
       </div>
     </div>
   );
