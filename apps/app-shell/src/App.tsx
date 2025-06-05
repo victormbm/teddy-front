@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Clientes from "clientes/src/App";
+import Clientes from "./pages/Clientes";
 import Home from "./pages/Home";
 
 export default function AppShell() {
