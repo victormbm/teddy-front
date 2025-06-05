@@ -1,9 +1,14 @@
-import { useClientes } from 'clientes/src/hooks/useClientes';
+import { useClientes, useCreateCliente, useDeleteCliente, useUpdateCliente } from 'clientes/src/hooks/useClientes';
 import { ClienteCard, CreateClienteModal, DeleteClienteModal, EditClienteModal} from 'design-system';
 import { useState } from 'react';
 
 export default function Clientes() {
-  const { data, isLoading, isError } = useClientes();
+  
+  const { data, isLoading, isError  } = useClientes();
+
+  const createMutation = useCreateCliente();
+  const updateMutation = useUpdateCliente();
+  const deleteMutation = useDeleteCliente();
 
   const [clienteSelecionado, setClienteSelecionado] = useState<number | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -13,6 +18,7 @@ export default function Clientes() {
   const handleSelecionarCliente = (id: number) => {
     setClienteSelecionado(id);
   };
+  
 
   if (isLoading) return <p>Carregando...</p>;
   if (isError) return <p>Erro ao carregar clientes</p>;
@@ -48,38 +54,47 @@ export default function Clientes() {
       </div>
 
       {/* Modais */}
-      <CreateClienteModal
-        isOpen={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        onSubmit={(name: string, salary: number, companyValuation: number) => {
-          console.log('Criar:', name, salary, companyValuation);
-          setShowCreateModal(false);
-        }}
-      />
+              <CreateClienteModal
+          isOpen={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          onSubmit={async (name, salary, companyValuation) => {
+            await createMutation.mutateAsync({ name, salary, companyValuation });
+            setShowCreateModal(false);
+          }}
+        />
 
-      {editingCliente && (
-            <EditClienteModal
-        isOpen={!!editingCliente}
-        cliente={editingCliente}
-        onClose={() => setEditingClient(null)}
-        onSubmit={(nome: string, salario: number, empresa: number) => {
-          console.log('Editar:', editingCliente.id, nome, salario, empresa);
-          setEditingClient(null);
-        }}
-            />
-      )}
+
+
+        {editingCliente && (
+          <EditClienteModal
+            isOpen={!!editingCliente}
+            cliente={editingCliente}
+            onClose={() => setEditingClient(null)}
+            onSubmit={async (nome, salario, empresa) => {
+              await updateMutation.mutateAsync({
+                id: editingCliente.id,
+                name: nome,
+                salary: salario,
+                companyValuation: empresa,
+              });
+              setEditingClient(null);
+            }}
+          />
+        )}
+
 
       {deletingCliente && (
         <DeleteClienteModal
           nomeCliente={deletingCliente.name}
           isOpen={!!deletingCliente}
           onClose={() => setDeletingClient(null)}
-          onConfirm={() => {
-            console.log('Deletar:', deletingCliente.id);
+          onConfirm={async () => {
+            await deleteMutation.mutateAsync(deletingCliente.id);
             setDeletingClient(null);
           }}
         />
       )}
+
     </div>
   );
 }

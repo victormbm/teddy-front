@@ -31,7 +31,7 @@ export function ClienteCard({
       <h2 className="text-lg font-semibold">{name}</h2>
       <p className="text-sm text-gray-600">Salário: R$ {salary.toFixed(2)}</p>
       <p className="text-sm text-gray-600 mb-2">
-        Valuation: R$ {companyValuation.toFixed(2)}
+        Empresa: R$ {companyValuation.toFixed(2)}
       </p>
 
       <div className="flex justify-between items-center mt-4 px-6">
