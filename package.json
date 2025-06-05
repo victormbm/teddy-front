@@ -1,0 +1,5 @@
+{
+  "name": "teddy-mfe",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"]
+}
