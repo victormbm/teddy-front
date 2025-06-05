@@ -10,16 +10,19 @@ export const LoginForm = ({ onSubmit }: Props) => {
   const [name, setName] = useState("");
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-white text-center">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-4">Olá, seja bem-vindo!</h1>
+    <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center px-4">
+      <h1 className="text-3xl sm:text-4xl font-semibold text-gray-900 mb-6 text-center">
+        Olá, seja bem-vindo!
+      </h1>
+
       <Input
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Digite o seu nome:"
+        className="mb-4"
       />
-      <div className="mt-4">
-        <Button onClick={() => onSubmit(name)}>Entrar</Button>
-      </div>
+
+      <Button onClick={() => onSubmit(name)}>Entrar</Button>
     </div>
   );
 };
