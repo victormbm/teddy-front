@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -10,6 +10,14 @@ export function CreateClienteModal({ isOpen, onClose, onSubmit }: Props) {
   const [name, setName] = useState('');
   const [salary, setSalary] = useState('');
   const [companyValuation, setCompanyValuation] = useState('');
+
+   useEffect(() => {
+    if (isOpen) {
+      setName('');
+      setSalary('');
+      setCompanyValuation('');
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

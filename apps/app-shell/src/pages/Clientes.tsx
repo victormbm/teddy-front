@@ -1,10 +1,12 @@
 import { useClientes, useCreateCliente, useDeleteCliente, useUpdateCliente } from 'clientes/src/hooks/useClientes';
-import { ClienteCard, CreateClienteModal, DeleteClienteModal, EditClienteModal} from 'design-system';
+import { ClienteCard, CreateClienteModal, DeleteClienteModal, EditClienteModal, Pagination} from 'design-system';
 import { useState } from 'react';
 
 export default function Clientes() {
+
+  const [page, setPage] = useState(1);
   
-  const { data, isLoading, isError  } = useClientes();
+  const { data, isLoading, isError } = useClientes(page);
 
   const createMutation = useCreateCliente();
   const updateMutation = useUpdateCliente();
@@ -24,17 +26,12 @@ export default function Clientes() {
   if (isError) return <p>Erro ao carregar clientes</p>;
 
   return (
-    <div className="p-8">
+    <div className="w-full max-w-[90rem] mx-auto px-6 py-8">
+        <div className="p-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-bold">
           {data?.clients?.length ?? 0} clientes encontrados:
         </h1>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="bg-[#F26D1F] text-white px-4 py-2 rounded hover:bg-orange-600"
-        >
-          Criar cliente
-        </button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -95,6 +92,26 @@ export default function Clientes() {
         />
       )}
 
+         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 w-full mt-8">
+          <div className="col-span-full">
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="w-full border-2 border-orange-500 text-orange-500 py-2 rounded-md hover:bg-orange-500 hover:text-white transition text-center"
+            >
+              Criar cliente
+            </button>
+          </div>
+        </div>
+              <Pagination
+              currentPage={page}
+              totalPages={data?.totalPages ?? 1}
+              onPageChange={(newPage) => setPage(newPage)}
+              />
     </div>
+  </div>
+
+
+  
+    
   );
 }

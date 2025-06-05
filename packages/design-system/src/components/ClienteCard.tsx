@@ -23,18 +23,20 @@ export function ClienteCard({
 }: Props) {
   return (
     <div
-      className={`border p-4 rounded-md w-full shadow-md cursor-pointer ${
+       className={`border p-4 rounded-md w-full shadow-md cursor-pointer flex flex-col items-center text-center ${
         isSelected ? 'border-purple-500' : 'border-gray-200'
       }`}
       onClick={onSelect}
     >
       <h2 className="text-lg font-semibold">{name}</h2>
-      <p className="text-sm text-gray-600">Salário: R$ {salary.toFixed(2)}</p>
+      <p className="text-sm text-gray-600">
+        Salário: R$ {salary.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+      </p>
       <p className="text-sm text-gray-600 mb-2">
-        Empresa: R$ {companyValuation.toFixed(2)}
+        Empresa: R$ {companyValuation.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
       </p>
 
-      <div className="flex justify-between items-center mt-4 px-6">
+      <div className="flex justify-center items-center gap-20 mt-4">
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -44,7 +46,7 @@ export function ClienteCard({
         >
           <Plus size={18} />
         </button>
-        
+
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -54,6 +56,7 @@ export function ClienteCard({
         >
           <Pencil size={18} />
         </button>
+
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -63,8 +66,6 @@ export function ClienteCard({
         >
           <Trash2 size={18} />
         </button>
-        
-        
       </div>
     </div>
   );
