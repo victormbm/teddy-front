@@ -5,16 +5,16 @@ const API_URL = 'https://boasorte.teddybackoffice.com.br/users';
 
 
 
-export function useClientes(page: number, limit: number = 16) {
+export function useClientes(page: number, limit: number) {
   return useQuery({
-    queryKey: ['clientes', page],
+    queryKey: ['clients', page, limit],
     queryFn: async () => {
       const { data } = await axios.get(`${API_URL}?page=${page}&limit=${limit}`);
       console.log('data', data);
 
       return data;
     },
-    placeholderData: (prev) => prev,
+    placeholderData: (prev) => (page === 1 ? prev : undefined)
   });
 }
 
