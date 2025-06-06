@@ -15,6 +15,8 @@ import {
 } from 'design-system';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+
 
 
 export default function Clientes() {
@@ -34,13 +36,9 @@ export default function Clientes() {
   const location = useLocation();
   const userName = location.state?.name || 'Usuário';
 
-
-
- 
+  const queryClient = useQueryClient();
 
   const { data: allClientes = [] } = useTodosClientes();
-
-
 
   const handleSelecionarCliente = (id: number) => {
     setClienteSelecionado(id);
@@ -118,26 +116,31 @@ export default function Clientes() {
           isOpen={showCreateModal}
           onClose={() => setShowCreateModal(false)}
           onSubmit={async (name, salary, companyValuation) => {
-            await createMutation.mutateAsync({ name, salary, companyValuation });
-            setShowCreateModal(false);
-          }}
+          await createMutation.mutateAsync({ name, salary, companyValuation });
+          await queryClient.invalidateQueries({ queryKey: ['clientes'] });
+          setShowCreateModal(false);
+        }}
+
         />
 
         {editingCliente && (
           <EditClienteModal
-            isOpen={!!editingCliente}
-            cliente={editingCliente}
-            onClose={() => setEditingClient(null)}
-            onSubmit={async (nome, salario, empresa) => {
-              await updateMutation.mutateAsync({
-                id: editingCliente.id,
-                name: nome,
-                salary: salario,
-                companyValuation: empresa,
-              });
-              setEditingClient(null);
-            }}
-          />
+          isOpen={!!editingCliente}
+          cliente={editingCliente}
+          onClose={() => setEditingClient(null)}
+          onSubmit={async (nome, salario, empresa) => {
+            await updateMutation.mutateAsync({
+              id: editingCliente.id,
+              name: nome,
+              salary: salario,
+              companyValuation: empresa,
+            });
+            await queryClient.invalidateQueries({ queryKey: ['clientes'] });
+            setEditingClient(null);
+          }}
+
+            />
+
         )}
 
         {deletingCliente && (
@@ -147,8 +150,10 @@ export default function Clientes() {
             onClose={() => setDeletingClient(null)}
             onConfirm={async () => {
               await deleteMutation.mutateAsync(deletingCliente.id);
+              await queryClient.invalidateQueries({ queryKey: ['clientes'] });
               setDeletingClient(null);
             }}
+
           />
         )}
       </div>

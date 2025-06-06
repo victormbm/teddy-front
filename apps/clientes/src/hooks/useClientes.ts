@@ -3,20 +3,27 @@ import axios from 'axios';
 
 const API_URL = 'https://boasorte.teddybackoffice.com.br/users';
 
+type Cliente = {
+  id: number;
+  name: string;
+  salary: number;
+  companyValuation: number;
+};
 
 
 export function useClientes(page: number, limit: number) {
-  return useQuery({
-    queryKey: ['clients', page, limit],
+  return useQuery<Cliente[]>({
+    queryKey: ['clientes', page, limit],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_URL}?page=${page}&limit=${limit}`);
-      console.log('data', data);
-
-      return data;
+      const response = await axios.get(
+        `https://boasorte.teddybackoffice.com.br/users?_page=${page}&_limit=${limit}`
+      );
+      return response.data;
     },
     placeholderData: (prev) => (page === 1 ? prev : undefined)
   });
 }
+
 
 export function useTodosClientes() {
   return useQuery({
