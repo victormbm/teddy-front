@@ -10,9 +10,10 @@ import {
   CreateClienteModal,
   DeleteClienteModal,
   EditClienteModal,
+  HeaderWithSideBar,
   Pagination,
 } from 'design-system';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Clientes() {
   const [page, setPage] = useState(1);
@@ -30,7 +31,6 @@ export default function Clientes() {
   const [deletingCliente, setDeletingClient] = useState<any | null>(null);
 
   const { data: allClientes = [] } = useTodosClientes();
-  const totalClientes = allClientes.length;
 
 
 
@@ -49,6 +49,8 @@ export default function Clientes() {
   if (isError) return <p>Erro ao carregar clientes</p>;
 
   return (
+
+    <HeaderWithSideBar>     
     <div className="w-full max-w-[90rem] mx-auto px-6 py-8">
       <div className="p-8">
         <div className="flex justify-between items-center mb-6">
@@ -143,5 +145,8 @@ export default function Clientes() {
         )}
       </div>
     </div>
+    </HeaderWithSideBar>
+  
+
   );
 }
