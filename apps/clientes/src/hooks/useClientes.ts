@@ -18,6 +18,17 @@ export function useClientes(page: number, limit: number) {
   });
 }
 
+export function useTodosClientes() {
+  return useQuery({
+    queryKey: ['todos-clientes'],
+    queryFn: async () => {
+      const { data } = await axios.get(`${API_URL}?limit=9999`);
+      return data.clients ?? [];
+    },
+  });
+}
+
+
 export function useCreateCliente() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -25,6 +36,7 @@ export function useCreateCliente() {
       axios.post(API_URL, novoCliente),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clientes'] });
+      queryClient.invalidateQueries({ queryKey: ['todos-clientes'] });
     },
   });
 }

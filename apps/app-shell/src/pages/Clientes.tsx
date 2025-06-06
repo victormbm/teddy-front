@@ -2,6 +2,7 @@ import {
   useClientes,
   useCreateCliente,
   useDeleteCliente,
+  useTodosClientes,
   useUpdateCliente,
 } from 'clientes/src/hooks/useClientes';
 import {
@@ -16,7 +17,6 @@ import { useEffect, useState } from 'react';
 export default function Clientes() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(16);
-  const [allClientes, setAllClientes] = useState<any[]>([]);
 
   const { data, isLoading, isError } = useClientes(page, limit);
 
@@ -29,13 +29,10 @@ export default function Clientes() {
   const [editingCliente, setEditingClient] = useState<any | null>(null);
   const [deletingCliente, setDeletingClient] = useState<any | null>(null);
 
-  useEffect(() => {
-    fetch('https://boasorte.teddybackoffice.com.br/users?limit=9999')
-      .then((res) => res.json())
-      .then((data) => setAllClientes(data.clients ?? []));
-  }, []);
-
+  const { data: allClientes = [] } = useTodosClientes();
   const totalClientes = allClientes.length;
+
+
 
   const handleSelecionarCliente = (id: number) => {
     setClienteSelecionado(id);
