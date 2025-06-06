@@ -5,6 +5,7 @@ import logo from '../assets/teddy-logo.png';
 
 interface HeaderWithSideBarProps {
   children: ReactNode;
+    userName?: string;
 }
 
 const navItems = [
@@ -13,7 +14,7 @@ const navItems = [
   { label: 'Clientes selecionados', path: '/clientes-selecionados', icon: <UserCheck size={18} /> },
 ];
 
-export default function HeaderWithSideBar({ children }: HeaderWithSideBarProps) {
+export default function HeaderWithSideBar({ children, userName }: HeaderWithSideBarProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
 
@@ -80,9 +81,13 @@ export default function HeaderWithSideBar({ children }: HeaderWithSideBarProps) 
             })}
           </nav>
 
-          <div className="text-sm text-gray-800">
-            Olá, <span className="font-bold">Usuário!</span>
-          </div>
+                <div className="text-sm text-gray-800">
+            <div className="text-sm text-gray-800">
+              Olá, <span className="font-bold">{userName || 'Usuário'}!</span>
+            </div>
+
+                  </div>
+
         </header>
 
         {/* Page content */}

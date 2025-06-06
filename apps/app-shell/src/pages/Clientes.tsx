@@ -14,10 +14,16 @@ import {
   Pagination,
 } from 'design-system';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
 
 export default function Clientes() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(16);
+  const [clienteSelecionado, setClienteSelecionado] = useState<number | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingCliente, setEditingClient] = useState<any | null>(null);
+  const [deletingCliente, setDeletingClient] = useState<any | null>(null);
 
   const { data, isLoading, isError } = useClientes(page, limit);
 
@@ -25,10 +31,12 @@ export default function Clientes() {
   const updateMutation = useUpdateCliente();
   const deleteMutation = useDeleteCliente();
 
-  const [clienteSelecionado, setClienteSelecionado] = useState<number | null>(null);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [editingCliente, setEditingClient] = useState<any | null>(null);
-  const [deletingCliente, setDeletingClient] = useState<any | null>(null);
+  const location = useLocation();
+  const userName = location.state?.name || 'Usuário';
+
+
+
+ 
 
   const { data: allClientes = [] } = useTodosClientes();
 
@@ -50,7 +58,7 @@ export default function Clientes() {
 
   return (
 
-    <HeaderWithSideBar>     
+    <HeaderWithSideBar userName={userName}>     
     <div className="w-full max-w-[90rem] mx-auto px-6 py-8">
       <div className="p-8">
         <div className="flex justify-between items-center mb-6">
