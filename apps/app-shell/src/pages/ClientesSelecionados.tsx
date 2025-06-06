@@ -1,29 +1,46 @@
 import { HeaderWithSideBar } from 'design-system';
-import { useLocation } from 'react-router-dom';
+import { useSelectedClientsStore } from '../stores/useSelectedClientsStore';
 
 export default function ClientesSelecionados() {
-  const location = useLocation();
-  const selectedClients = location.state?.selectedClients || [];
+  const { selectedClients, removeClient, clearClients } = useSelectedClientsStore();
 
   return (
-    <HeaderWithSideBar>
-      <div className="w-full max-w-[90rem] mx-auto px-6 py-8">
-        <h2 className="text-lg font-semibold mb-6">
-          Clientes selecionados:
-        </h2>
+    <HeaderWithSideBar userName="usuário">
+      <div className="p-8">
+        <h2 className="text-xl font-bold mb-4">Clientes selecionados:</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          {selectedClients.map((cliente: any, index: number) => (
+        <div className="flex flex-wrap gap-4">
+          {selectedClients.map((cliente) => (
             <div
-              key={index}
-              className="border rounded p-4 bg-white shadow-sm text-sm"
+              key={cliente.id}
+              className="border rounded shadow p-4 min-w-[250px] flex flex-col justify-between"
             >
-              <p className="font-semibold">{cliente.name}</p>
-              <p>Salário: R${cliente.salary}</p>
-              <p>Empresa: R${cliente.companyValuation}</p>
+              <div className="text-center mb-2">
+                <h3 className="font-bold">{cliente.name}</h3>
+                <p>Salário: R$ {cliente.salary.toLocaleString('pt-BR')}</p>
+                <p>Empresa: R$ {cliente.companyValuation.toLocaleString('pt-BR')}</p>
+              </div>
+
+              <div className="flex justify-end px-2 mt-2">
+                <button
+                  onClick={() => removeClient(cliente.id)}
+                  className="text-red-600 text-xl font-bold"
+                >
+                  –
+                </button>
+              </div>
             </div>
           ))}
         </div>
+
+        {selectedClients.length > 0 && (
+          <button
+            onClick={clearClients}
+            className="w-full mt-6 border border-orange-500 text-orange-500 py-2 rounded hover:bg-orange-50 transition"
+          >
+            Limpar todos os selecionados
+          </button>
+        )}
       </div>
     </HeaderWithSideBar>
   );

@@ -12,15 +12,14 @@ type Cliente = {
 
 
 export function useClientes(page: number, limit: number) {
+
   return useQuery<Cliente[]>({
     queryKey: ['clientes', page, limit],
     queryFn: async () => {
-      const response = await axios.get(
-        `https://boasorte.teddybackoffice.com.br/users?_page=${page}&_limit=${limit}`
-      );
-      return response.data;
+      const { data } = await axios.get(`${API_URL}?limit=${limit}&page=${page}`);
+      return data?.clients ?? []; 
     },
-    placeholderData: (prev) => (page === 1 ? prev : undefined)
+    placeholderData: (prev) => (page === 1 ? prev : undefined),
   });
 }
 

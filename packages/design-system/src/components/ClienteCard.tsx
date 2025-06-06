@@ -1,4 +1,5 @@
 import { Pencil, Trash2, Plus } from 'lucide-react';
+import { toast } from 'sonner';
 
 type Props = {
   name: string;
@@ -8,7 +9,7 @@ type Props = {
   onSelect: () => void;
   onEdit: () => void;
   onDelete: () => void;
-  onCreate?: () => void;
+  onAddToSelecionados?: () => void;
 };
 
 export function ClienteCard({
@@ -19,11 +20,11 @@ export function ClienteCard({
   onSelect,
   onEdit,
   onDelete,
-  onCreate,
+  onAddToSelecionados,
 }: Props) {
   return (
     <div
-       className={`border p-4 rounded-md w-full shadow-md cursor-pointer flex flex-col items-center text-center ${
+      className={`border p-4 rounded-md w-full shadow-md cursor-pointer flex flex-col items-center text-center ${
         isSelected ? 'border-purple-500' : 'border-gray-200'
       }`}
       onClick={onSelect}
@@ -36,11 +37,12 @@ export function ClienteCard({
         Empresa: R$ {companyValuation.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
       </p>
 
-      <div className="flex justify-center items-center gap-20 mt-4">
+      <div className="mt-4 flex flex-wrap justify-center gap-4">
         <button
           onClick={(e) => {
             e.stopPropagation();
-            onCreate?.();
+            toast.success('Cliente adicionado aos selecionados');
+            onAddToSelecionados?.();
           }}
           className="hover:text-orange-600"
         >
