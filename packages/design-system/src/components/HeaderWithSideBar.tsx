@@ -1,83 +1,92 @@
-import { useState } from 'react';
-import { Menu } from 'lucide-react';
+import { useState, ReactNode } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ReactNode } from 'react';
-
-const navItems = [
-  { label: 'Clientes', path: '/clientes' },
-  { label: 'Clientes selecionados', path: '/clientes-selecionados' },
-  { label: 'Sair', path: '/logout' },
-];
+import { Menu, Home, Users, UserCheck } from 'lucide-react';
+import logo from '../assets/teddy-logo.png'; 
 
 interface HeaderWithSideBarProps {
   children: ReactNode;
 }
 
+const navItems = [
+  { label: 'Home', path: '/', icon: <Home size={18} /> },
+  { label: 'Clientes', path: '/clientes', icon: <Users size={18} /> },
+  { label: 'Clientes selecionados', path: '/clientes-selecionados', icon: <UserCheck size={18} /> },
+];
+
 export default function HeaderWithSideBar({ children }: HeaderWithSideBarProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
-      <aside
-        className={`fixed top-0 left-0 h-full bg-white shadow-md transition-all z-40 ${
-          sidebarOpen ? 'w-64' : 'w-16'
-        }`}
-      >
-        <div className="h-16 flex items-center justify-center border-b">
-          <span className="text-orange-600 font-bold text-xl">T</span>
+      <aside className={`fixed top-0 left-0 h-full shadow-md z-40 transition-all ${sidebarOpen ? 'w-64' : 'w-16'} bg-white`}>
+        {/* Top logo area */}
+        <div className="h-20 bg-black flex items-center justify-center">
+          <img src={logo} alt="Logo Teddy" className="h-10" />
         </div>
-        <nav className="flex flex-col mt-4 px-2">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `p-3 rounded text-sm font-medium ${
-                  isActive ? 'text-orange-600' : 'text-gray-800'
-                } hover:bg-gray-100`
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-      </aside>
 
-      <div className={`flex flex-col flex-1 min-h-screen ${sidebarOpen ? 'ml-64' : 'ml-16'} transition-all`}>
-        {/* Header */}
-        <header className="h-16 flex items-center justify-between border-b px-6 bg-white shadow-sm">
-          <div className="flex items-center gap-4">
-            <Menu
-              className="cursor-pointer text-gray-800"
-              onClick={() => setSidebarOpen((prev) => !prev)}
-            />
-            <span className="text-orange-600 font-bold text-xl hidden sm:inline">teddy</span>
-          </div>
-          <nav className="hidden md:flex gap-6">
-            {navItems.map((item) => (
+        {/* Nav items */}
+        <nav className="flex flex-col gap-1 px-3 py-6">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `text-sm font-medium ${
-                    isActive ? 'text-orange-600' : 'text-gray-800'
-                  } hover:text-orange-600`
+                  `flex items-center gap-3 p-3 rounded-md text-sm font-medium transition-all
+                  ${isActive || isActive === undefined && isActive
+                    ? 'text-orange-600 font-semibold bg-orange-50'
+                    : 'text-black hover:bg-orange-50'}`
                 }
               >
-                {item.label}
+                {item.icon}
+                {sidebarOpen && <span>{item.label}</span>}
               </NavLink>
-            ))}
+            );
+          })}
+        </nav>
+      </aside>
+
+      {/* Main content */}
+      <div className={`flex flex-col flex-1 transition-all ${sidebarOpen ? 'ml-64' : 'ml-16'}`}>
+        {/* Header */}
+        <header className="h-20 flex items-center justify-between px-6 border-b bg-white shadow-sm">
+          <div className="flex items-center gap-4">
+            <Menu
+              className="cursor-pointer text-gray-800"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            />
+               <img src={logo} alt="Logo Teddy" className="h-10" />
+          </div>
+
+          <nav className="hidden md:flex gap-6">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={`text-sm font-medium transition ${
+                    isActive
+                      ? 'text-orange-600 font-semibold'
+                      : 'text-gray-800 hover:text-orange-600'
+                  }`}
+                >
+                  {item.label}
+                </NavLink>
+              );
+            })}
           </nav>
+
           <div className="text-sm text-gray-800">
             Olá, <span className="font-bold">Usuário!</span>
           </div>
         </header>
 
-        <main className="flex-1 p-8 bg-gray-50">
-           {children}
-        </main>
+        {/* Page content */}
+        <main className="flex-1 p-8 bg-gray-50">{children}</main>
       </div>
     </div>
   );
