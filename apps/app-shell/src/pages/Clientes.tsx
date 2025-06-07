@@ -92,7 +92,7 @@ export default function Clientes() {
                 name={cliente.name}
                 salary={cliente.salary}
                 companyValuation={cliente.companyValuation}
-                isSelected={clienteSelecionado === cliente.id}
+                isSelected={idsSelecionados.includes(cliente.id)}
                 onEdit={() => setEditingClient(cliente)}
                 onDelete={() => setDeletingClient(cliente)}
                 onSelect={() => handleSelecionarCliente(cliente.id)}

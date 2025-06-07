@@ -25,12 +25,11 @@ export function ClienteCard({
   onRemoveFromSelecionados,
 }: Props) {
   return (
-    <div
-      className={`border p-4 rounded-md w-full shadow-md cursor-pointer flex flex-col items-center text-center ${
-        isSelected ? 'border-purple-500' : 'border-gray-200'
-      }`}
-      onClick={onSelect}
-    >
+      <div
+        className={`border p-4 rounded-md w-full shadow-md cursor-pointer flex flex-col items-center text-center border-gray-200 hover:border-purple-500`}
+        onClick={onSelect}
+      >
+
       <h2 className="text-lg font-semibold">{name}</h2>
       <p className="text-sm text-gray-600">
         Salário: R$ {salary.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
