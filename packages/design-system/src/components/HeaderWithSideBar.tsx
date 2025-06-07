@@ -1,7 +1,6 @@
 import { useEffect, useState, ReactNode } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, Home, Users } from 'lucide-react';
-import logo from '../assets/teddy-logo.png';
 
 interface HeaderWithSideBarProps {
   children: ReactNode;
@@ -27,7 +26,7 @@ export default function HeaderWithSideBar({ children, userName }: HeaderWithSide
       {/* Sidebar */}
       <aside className={`fixed top-0 left-0 h-full shadow-md z-40 transition-all ${sidebarOpen ? 'w-64' : 'w-16'} bg-white`}>
         <div className="h-20 bg-black flex items-center justify-center">
-          <img src={logo} alt="Logo Teddy" className="h-10" />
+          <img src="/teddy-logo.png" alt="Logo" />
         </div>
 
         <nav className="flex flex-col gap-1 px-3 py-6">
@@ -57,7 +56,7 @@ export default function HeaderWithSideBar({ children, userName }: HeaderWithSide
               className="cursor-pointer text-gray-800 hidden md:block"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             />
-            <img src={logo} alt="Logo Teddy" className="h-10" />
+           <img src="/teddy-logo.png" alt="Logo" />
           </div>
 
           <nav className="hidden md:flex gap-6">
