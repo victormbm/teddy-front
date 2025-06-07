@@ -15,7 +15,7 @@ const navItems = [
 
 export default function HeaderWithSideBar({ children, userName }: HeaderWithSideBarProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const location = useLocation();
+  const location = typeof window !== 'undefined' ? useLocation() : { pathname: '' };
 
   useEffect(() => {
     if (window.innerWidth < 768) setSidebarOpen(false);
