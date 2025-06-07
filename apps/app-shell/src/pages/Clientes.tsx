@@ -33,7 +33,7 @@ export default function Clientes() {
   const deleteMutation = useDeleteCliente();
 
   const location = useLocation();
-  const userName = location.state?.name || 'Usuário';
+  const userName = location?.state?.name ?? 'Usuário';
   const queryClient = useQueryClient();
 
   const {

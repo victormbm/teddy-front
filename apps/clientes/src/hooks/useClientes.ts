@@ -7,7 +7,7 @@ type Cliente = {
   id: number;
   name: string;
   salary: number;
-  companyValuation: number; // teste
+  companyValuation: number;
 };
 
 
