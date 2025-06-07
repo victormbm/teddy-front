@@ -4,7 +4,7 @@ import {
   useDeleteCliente,
   useTodosClientes,
   useUpdateCliente,
-} from 'clientes/src/hooks/useClientes';
+} from 'clientes/hooks/useClientes';
 import {
   ClienteCard,
   CreateClienteModal,

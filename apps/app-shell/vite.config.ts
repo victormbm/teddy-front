@@ -8,8 +8,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@design-system': path.resolve(__dirname, '../../packages/design-system/src'),
-    },
+    '@design-system': path.resolve(__dirname, '../../packages/design-system/src'),
+    'clientes': path.resolve(__dirname, '../clientes/src'),
+  },
   },
   test: {
     globals: true,
