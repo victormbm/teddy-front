@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { Pencil, Trash2, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
   onEdit: () => void;
   onDelete: () => void;
   onAddToSelecionados?: () => void;
+  onRemoveFromSelecionados?: () => void;
 };
 
 export function ClienteCard({
@@ -21,6 +22,7 @@ export function ClienteCard({
   onEdit,
   onDelete,
   onAddToSelecionados,
+  onRemoveFromSelecionados,
 }: Props) {
   return (
     <div
@@ -38,18 +40,33 @@ export function ClienteCard({
       </p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-4">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toast.success('Cliente adicionado aos selecionados');
-            onAddToSelecionados?.();
-          }}
-          className="hover:text-orange-600"
-        >
-          <Plus size={18} />
-        </button>
+        {isSelected ? (
+          <button
+            data-testid="remove-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onRemoveFromSelecionados?.();
+            }}
+            className="hover:text-orange-600"
+          >
+            <Minus size={18} />
+          </button>
+        ) : (
+          <button
+            data-testid="add-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toast.success('Cliente adicionado aos selecionados');
+              onAddToSelecionados?.();
+            }}
+            className="hover:text-orange-600"
+          >
+            <Plus size={18} />
+          </button>
+        )}
 
         <button
+          data-testid="edit-button"
           onClick={(e) => {
             e.stopPropagation();
             onEdit();
@@ -60,6 +77,7 @@ export function ClienteCard({
         </button>
 
         <button
+          data-testid="delete-button"
           onClick={(e) => {
             e.stopPropagation();
             onDelete();
